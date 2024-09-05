@@ -91,8 +91,10 @@ const FULL_GITMOJI_SPEC = `${GITMOJI_HELP}
 🧵, Add or update code related to multithreading or concurrency; 
 🦺, Add or update code related to validation.`;
 
+const CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS = config.OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS;
+
 const CONVENTIONAL_COMMIT_KEYWORDS =
-  'Do not preface the commit with anything, except for the conventional commit keywords: fix, feat, build, chore, ci, docs, style, refactor, perf, test.';
+  `Do not preface the commit with anything, except for the conventional commit keywords: ${CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS}.`;
 
 const getCommitConvention = (fullGitMojiSpec: boolean) =>
   config.OCO_EMOJI

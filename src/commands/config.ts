@@ -34,7 +34,8 @@ export enum CONFIG_KEYS {
   OCO_API_URL = 'OCO_API_URL',
   OCO_OLLAMA_API_URL = 'OCO_OLLAMA_API_URL',
   OCO_FLOWISE_ENDPOINT = 'OCO_FLOWISE_ENDPOINT',
-  OCO_FLOWISE_API_KEY = 'OCO_FLOWISE_API_KEY'
+  OCO_FLOWISE_API_KEY = 'OCO_FLOWISE_API_KEY',
+  OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS = 'OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS'
 }
 
 export enum CONFIG_MODES {
@@ -353,6 +354,15 @@ export const configValidators = {
       `${value} is not a valid URL. It should start with 'http://' or 'https://'.`
     );
     return value;
+  },
+
+  [CONFIG_KEYS.OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS](value: any) {
+    validateConfig(
+      CONFIG_KEYS.OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS,
+      typeof value === 'string',
+      'Must be a string'
+    );
+    return value;
   }
 };
 
@@ -391,6 +401,7 @@ export type ConfigType = {
   [CONFIG_KEYS.OCO_OLLAMA_API_URL]?: string;
   [CONFIG_KEYS.OCO_FLOWISE_ENDPOINT]: string;
   [CONFIG_KEYS.OCO_FLOWISE_API_KEY]?: string;
+  [CONFIG_KEYS.OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS]: string;
 };
 
 const defaultConfigPath = pathJoin(homedir(), '.opencommit');
@@ -438,6 +449,7 @@ export const DEFAULT_CONFIG = {
   OCO_TEST_MOCK_TYPE: 'commit-message',
   OCO_FLOWISE_ENDPOINT: ':',
   OCO_WHY: false,
+  OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS: 'fix, feat, build, chore, ci, docs, style, refactor, perf, test',
   OCO_GITPUSH: true // todo: deprecate
 };
 
@@ -485,6 +497,8 @@ const getEnvConfig = (envPath: string) => {
     OCO_AI_PROVIDER: process.env.OCO_AI_PROVIDER as OCO_AI_PROVIDER_ENUM,
     OCO_ONE_LINE_COMMIT: parseEnvVarValue(process.env.OCO_ONE_LINE_COMMIT),
     OCO_TEST_MOCK_TYPE: process.env.OCO_TEST_MOCK_TYPE,
+
+    OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS: process.env.OCO_CONVENTIONAL_COMMIT_ALLOWED_KEYWORDS,
 
     OCO_GITPUSH: parseEnvVarValue(process.env.OCO_GITPUSH) // todo: deprecate
   };
